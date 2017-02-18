@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <div id="page"></div>
+</body>
+<script type="text/template" id="home">
+  <div>
+    <h1>Home</h1>
+    <h2><a href="#list">List Page</a></h2>
+    <h2><a href="#profile">Profile Page</a></h2>
+  </div>
+</script>
+<script type="text/template" id="list">
+  <div>
+    <h1><a href="#home">返回主页</a></h1>
+    <h2>商品列表</h2>
+    <ul>
+      <li>001</li>
+      <li>002</li>
+      <li>003</li>
+      <li>004</li>
+      <li>005</li>
+    </ul>
+  </div>
+</script>
+<script type="text/template" id="profile">
+  <div>
+    <h1>Profile</h1>
+    <h2><a href="#home">Home</a></h2>
+    <h2><a href="#list">List Page</a></h2>
+  </div>
+</script>
+<script>
+  var hash = location.hash
+  if (hash) {
+    hash = hash.substr(1)
+  } else {
+    hash = 'home'
+    location.hash = hash
+  }
+
+  var page = document.querySelector('#page')
+
+  var tpl = document.querySelector('#' + hash).innerHTML
+
+  page.innerHTML = tpl
+
+  window.onhashchange = function(){
+    var hash = location.hash.substr(1)
+    var tpl = document.querySelector('#' + hash).innerHTML
+    page.innerHTML = tpl
+  }
+</script>
+</html>

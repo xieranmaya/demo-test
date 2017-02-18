@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+<script src="vue.js"></script>
+<script src="vue-router.js"></script>
+<script type="text/x-template" id="home">
+  <div>
+    <h1>Home</h1>
+    <ul>
+      <li><a href="#/buyed">已购商品</a></li>
+      <li><a href="#/profile">个人页面</a></li>
+    </ul>
+    <ul>
+      <li>
+        <router-link
+          :to="{name: 'user', params:{id: userId}}">123456</router-link>
+        <router-link
+          to="/user/1234">1234</router-link>
+        <router-link
+          :to="'/user/' + userId">1234</router-link>
+      </li>
+    </ul>
+    <router-view></router-view>
+  </div>
+</script>
+<script type="text/x-template" id="buyed">
+  <div>
+    <h1>已购商品</h1>
+    <ul>
+      <li><a href="#/buyed/reality">实体商品</a></li>
+      <li><a href="#/buyed/virtual">虚拟商品</a></li>
+    </ul>
+    <router-view></router-view>
+  </div>
+</script>
+<script id="reality-goods" type="text/x-template">
+  <div>
+    <ul>
+      <li>牙刷</li>
+      <li>手机</li>
+      <li>电脑</li>
+    </ul>
+  </div>
+</script>
+<script id="virtual-goods" type="text/x-template">
+  <div>
+    <ul>
+      <li>话费</li>
+      <li>游戏卡</li>
+      <li>会员充值</li>
+    </ul>
+  </div>
+</script>
+<script type="text/x-template" id="profile">
+  <div>
+    <h1>个人页面</h1>
+    <ul>
+      <li>
+        <router-link to="/profile/my-info">我的个人信息</router-link>
+      </li>
+      <li>
+        <router-link :to="{name: 'my-address'}">我的收货地址</router-link>
+      </li>
+    </ul>
+    <div>
+      <router-view name="main"></router-view>
+      <router-view name="side"></router-view>
+    </div>
+  </div>
+</script>
+<script type="text/x-template" id="my-info">
+  <div>
+    个人信息组件
+    <router-view name="x"></router-view>
+  </div>
+</script>
+<script type="text/x-template" id="friends">
+  <div>
+    好友组件
+    <router-view name="y"></router-view>
+  </div>
+</script>
+<script type="text/x-template" id="my-address">
+  <div>我的收货地址</div>
+</script>
+<script type="text/x-template" id="near-address">
+  <div>附近收货点</div>
+</script>
+<script>
+  var Home = {
+    name: 'home',
+    template: '#home'
+  }
+
+  var Buyed = {
+    name: 'buyed',
+    template: '#buyed'
+  }
+
+  var RealityGoods = {
+    name: 'reality-goods',
+    template: '#reality-goods'
+  }
+
+  var VirtualGoods = {
+    name: 'virtual-goods',
+    template: '#virtual-goods'
+  }
+
+  var Profile = {
+    name: 'profile',
+    template: '#profile'
+  }
+
+  var MyInfo = {
+    name: 'my-info',
+    template: '#my-info'
+  }
+  var Friends = {
+    name: 'friends',
+    template: '#friends'
+  }
+
+  var MyAddress = {
+    name: 'my-address',
+    template: '#my-address'
+  }
+
+  var NearAddress = {
+    name: 'near-address',
+    template: '#near-address'
+  }
+
+  var User = {
+    name: 'user',
+    template: `
+      <div>
+       <h3>用户视图</h3>
+       <p>Welcome {{info.id}}</p>
+       <pre>
+         {{$route.params}}
+       </pre>
+      </div>
+    `,
+    data(){
+      return {
+        userId: this.$route.params
+      }
+    },
+    computed: {
+      info() {
+        return this.$route.params
+      }
+    }
+  }
+
+  var router = new VueRouter({
+    // mode: 'history',
+    routes: [{
+      path: '/buyed',
+      component: Buyed,
+      children: [{
+        path: 'reality',
+        component: RealityGoods
+      }, {
+        path: 'virtual',
+        component: VirtualGoods
+      }]
+    },{
+      path: '/profile',
+      component: Profile,
+      children: [{
+        path: 'my-info',
+        components: {
+          main: MyInfo,
+          side: Friends
+        },
+        children: [{
+          path: 'a',
+          components: {
+            x: {
+              name: 'three',
+              template: '<div>x</div>'
+            },
+            y: {
+              name: 'four',
+              template: '<div>y</div>'
+            }
+          }
+        }]
+      }, {
+        path: 'my-address',
+        name: 'my-address',
+        components: {
+          main: MyAddress,
+          side: NearAddress
+        }
+      }]
+    },{
+      // #/user/abc/38
+      path: '/user/:id',
+      name: 'user',
+      component: User
+    },{
+      path: '*',
+      component: {
+        template: `
+          <div>Not Found</div>
+        `
+      }
+    }]
+  })
+
+  // Vue.use(VueRouter)
+
+  app = new Vue({
+    el: '#app',
+    template: '#home',//根Vue实例
+    router, 
+    data: {
+      userId: 123456
+    }
+  })
+
+</script>
+</html>
