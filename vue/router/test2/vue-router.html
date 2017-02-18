@@ -13,8 +13,8 @@
   <div>
     <h1>Home</h1>
     <ul>
-      <li><a href="#/buyed">已购商品</a></li>
-      <li><a href="#/profile">个人页面</a></li>
+      <li><router-link to="/buyed">已购商品</router-link></li>
+      <li><router-link to="/profile">个人页面</router-link></li>
     </ul>
     <ul>
       <li>
@@ -33,8 +33,8 @@
   <div>
     <h1>已购商品</h1>
     <ul>
-      <li><a href="#/buyed/reality">实体商品</a></li>
-      <li><a href="#/buyed/virtual">虚拟商品</a></li>
+      <li><router-link to="/buyed/reality">实体商品</router-link></li>
+      <li><router-link to="/buyed/virtual">虚拟商品</router-link></li>
     </ul>
     <router-view></router-view>
   </div>
@@ -162,7 +162,7 @@
 
   var router = new VueRouter({
     mode: 'history',
-    base: '/demo-test/vue/router/test/vue-router.html',
+    base: '/demo-test/vue/router/test2/vue-router.html',
     routes: [{
       path: '/buyed',
       component: Buyed,
